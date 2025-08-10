@@ -34,19 +34,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({ origin: '*' }));
 
+// Helmet con CSP estricta para evitar XSS
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Por si quieres agregar CSP más adelante
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
   })
 );
 
-// Prevent MIME sniffing
 app.use(helmet.noSniff());
 
-// Prevent some XSS attacks
-app.use(helmet.xssFilter());
-
-// Control Cache para que no guarde nada
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
@@ -55,7 +61,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Fake "X-Powered-By" header
 app.use((req, res, next) => {
   res.setHeader('X-Powered-By', 'PHP 7.4.3');
   next();
