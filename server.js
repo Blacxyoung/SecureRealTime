@@ -36,11 +36,17 @@ app.use(cors({ origin: '*' }));
 
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: false, // Por si quieres agregar CSP más adelante
   })
 );
+
+// Prevent MIME sniffing
 app.use(helmet.noSniff());
 
+// Prevent some XSS attacks
+app.use(helmet.xssFilter());
+
+// Control Cache para que no guarde nada
 app.use((req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
@@ -49,6 +55,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// Fake "X-Powered-By" header
 app.use((req, res, next) => {
   res.setHeader('X-Powered-By', 'PHP 7.4.3');
   next();
@@ -141,7 +148,6 @@ server.listen(portNum, () => {
     console.log('Running Tests...');
     setTimeout(() => {
       try {
-        // Aquí asumo que test-runner es CommonJS también y usarás require igual que fcctesting.js
         const runner = require('./test-runner.cjs');
         runner.run();
       } catch (error) {
