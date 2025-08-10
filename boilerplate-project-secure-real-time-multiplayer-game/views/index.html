@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Real Time Multiplayer Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #333;
+    }
+    #gameCanvas {
+      border: 2px solid #000;
+      background-color: #fff;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Secure Real Time Multiplayer Game</h1>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public/client.js"></script>
+
+  <script>
+    const socket = io();
+    socket.on('connect', () => {
+      console.log('Conectado al servidor con id:', socket.id);
+    });
+    socket.on('disconnect', () => {
+      console.log('Desconectado del servidor');
+    });
+  </script>
+</body>
+</html>

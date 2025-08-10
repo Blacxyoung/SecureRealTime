@@ -1,4 +1,4 @@
-import Player from './Player.mjs';
+import { Player } from './Player.mjs';
 import Collectible from './Collectible.mjs';
 
 const socket = io();

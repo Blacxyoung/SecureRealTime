@@ -24,12 +24,11 @@
 *
 *
 */
-
 'use strict';
 
 const cors = require('cors');
 const fs = require('fs');
-const runner = require('../test-runner');
+const runner = require('../test-runner.cjs');
 
 module.exports = function (app) {
 
@@ -41,6 +40,7 @@ module.exports = function (app) {
         res.send(data.toString());
       });
     });
+
   app.route('/_api/routes/api.js')
     .get(function(req, res, next) {
       console.log('requested');
@@ -49,6 +49,7 @@ module.exports = function (app) {
         res.type('txt').send(data.toString());
       });
     });
+
   app.route('/_api/controllers/convertHandler.js')
     .get(function(req, res, next) {
       console.log('requested');
@@ -91,6 +92,7 @@ module.exports = function (app) {
       process.nextTick(() =>  res.json(testFilter(runner.report, req.query.type, req.query.n)));
     });
   });
+
   app.get('/_api/app-info', function(req, res) {
     var hs = Object.keys(res._headers)
       .filter(h => !h.match(/^access-control-\w+/));
