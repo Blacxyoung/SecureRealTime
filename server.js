@@ -34,18 +34,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({ origin: '*' }));
 
-// Helmet con CSP estricta para evitar XSS
+// Helmet con configuración CSP válida
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net"],
+        styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+        fontSrc: ["'self'", "fonts.gstatic.com"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: [],
+        connectSrc: ["'self'", "ws:"],
+        upgradeInsecureRequests: true,
       },
     },
   })
